@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách môn học</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            color: #333;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td img {
+            width: 50px;
+            height: auto;
+            object-fit: cover;
+            vertical-align: middle;
+        }
+        .image-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .delete-btn {
+            background-color: #f44336;
+        }
+        .delete-btn:hover {
+            background-color: #da190b;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h2>Danh sách môn học</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên môn học</th>
+                    <th>Loại môn học</th>
+                    <th>Học kỳ</th>
+                    <th>Khoa</th>
+                    <th>Hình ảnh</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Row 1 -->
+                <tr>
+                    <td>3</td>
+                    <td>Mạng máy tính</td>
+                    <td>Cơ sở</td>
+                    <td>HK3</td>
+                    <td>CNTT</td>
+                    <td class="image-cell">
+                        <img id="image-preview-3" src="https://via.placeholder.com/50" alt="Mạng máy tính">
+                        <input type="file" id="image-3" name="image-3" accept="image/*" onchange="previewImage(event, 'image-preview-3')">
+                    </td>
+                    <td>
+                        <a href="/delete/3" onclick="return confirm('Bạn có chắc muốn xoá?')">
+                            <button class="delete-btn">Xóa</button>
+                        </a>
+                    </td>
+                </tr>
+                <!-- Row 2 -->
+                <tr>
+                    <td>4</td>
+                    <td>CTDL</td>
+                    <td>Cơ sở</td>
+                    <td>HK3</td>
+                    <td>CNTT</td>
+                    <td class="image-cell">
+                        <img id="image-preview-4" src="https://via.placeholder.com/50" alt="CTDL">
+                        <input type="file" id="image-4" name="image-4" accept="image/*" onchange="previewImage(event, 'image-preview-4')">
+                    </td>
+                    <td>
+                        <a href="/delete/4" onclick="return confirm('Bạn có chắc muốn xoá?')">
+                            <button class="delete-btn">Xóa</button>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Thêm môn học</h3>
+        <form id="create" method="POST" action="/" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="id">Nhập id:</label>
+                <input type="text" id="id" name="id" placeholder="Nhập id" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Tên môn học:</label>
+                <input type="text" id="name" name="name" placeholder="Nhập tên môn học" required>
+            </div>
+            <div class="form-group">
+                <label for="courses_type">Loại môn học:</label>
+                <input type="text" id="courses_type" name="courses_type" placeholder="Nhập loại môn học" required>
+            </div>
+            <div class="form-group">
+                <label for="semester">Học kỳ:</label>
+                <input type="text" id="semester" name="semester" placeholder="Nhập học kỳ" required>
+            </div>
+            <div class="form-group">
+                <label for="department">Khoa:</label>
+                <input type="text" id="department" name="department" placeholder="Nhập khoa" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Chọn hình ảnh:</label>
+                <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event, 'image-preview')" required>
+                <img id="image-preview" style="display: none; max-width: 100px; margin-top: 10px;" />
+            </div>
+            <button type="submit">Thêm môn học</button>
+        </form>
+    </div>
+
+    <script>
+        function previewImage(event, previewId) {
+            const imagePreview = document.getElementById(previewId);
+            imagePreview.style.display = 'block';
+            imagePreview.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>
